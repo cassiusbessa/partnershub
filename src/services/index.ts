@@ -11,5 +11,10 @@ class Service {
       { headers: { Authorization: `Bearer ${this.token}` } });
     return await res.json();
   }
+  
+  public async getUsers(since?: number, per_page?: number) {
+    return this.request('user', {since: since || 0, per_page: per_page || 50});    
+  }
+
 
 }
