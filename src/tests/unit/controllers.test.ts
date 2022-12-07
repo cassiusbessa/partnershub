@@ -60,4 +60,22 @@ describe('Controllers', () => {
       expect((res.json as sinon.SinonStub).calledWith({message:'Not found'})).to.be.true;
     });
   });
+
+  describe('3 - GetUserRepos with valid username', () => {
+    before(() => {
+      sinon.stub(Service, 'getUserRepos').resolves({status: 200, data: repos});
+      req.params = {username: 'cassiusbessa'};
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns(res);
+    });
+    after(() => {
+      sinon.restore();
+    });
+    it('should return user repos', async () => {
+      await controllers.getUserRepos(req, res);
+      expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith(repos)).to.be.true;
+    });
+  });
+
 });
