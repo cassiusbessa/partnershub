@@ -31,7 +31,7 @@ describe('Services', () => {
     beforeEach(() => {
       sinon.stub(Service, <any>'request').resolves({ status: 404, data: {message:'Not found'} });
     });
-    it('should return user details', async () => {
+    it('should return not fount status and mensage', async () => {
       const { status, data } = await Service.getUser('cassiusbessa');
       expect(status).to.equal(404);
       expect(data).to.deep.equal( { message:'Not found' });
