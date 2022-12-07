@@ -12,20 +12,52 @@ describe('Controllers', () => {
   const req = {} as Request;
 	const res = {} as Response;
   describe('1 - GetUsers', () => {
-    const response = { status: 200, data: users, nextPage: null };
     before(() => {
       sinon.stub(Service, 'getUsers').resolves({status: 200, data: users, nextPage: null});
       req.query = {since: '0', per_page: '5'};
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
+    });
     after(() => {
       sinon.restore();
     });
-    });
     it('should return users', async () => {
       await controllers.getUsers(req, res);
-      expect((res.status as sinon.SinonStub).calledWith(response.status)).to.be.true;
+      expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith({ users, nextPage: null })).to.be.true;
+    });
+  });
+
+  describe('2 - GetUser with valid username', () => {
+    before(() => {
+      sinon.stub(Service, 'getUser').resolves({status: 200, data: userDetail});
+      req.params = {username: 'cassius'};
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns(res);
+    });
+    after(() => {
+      sinon.restore();
+    });
+    it('should return user details', async () => {
+      await controllers.getUser(req, res);
+      expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith(userDetail )).to.be.true;
+    });
+  });
+  describe('2 - GetUser with invalid username', () => {
+    before(() => {
+      sinon.stub(Service, 'getUser').resolves({status: 404, data: {message:'Not found'}});
+      req.params = {username:"invalidUser"};
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns(res);
+    });
+    after(() => {
+      sinon.restore();
+    });
+    it('should return not fount status and mensage', async () => {
+      await controllers.getUser(req, res);
+      expect((res.status as sinon.SinonStub).calledWith(404)).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith({message:'Not found'})).to.be.true;
     });
   });
 });
