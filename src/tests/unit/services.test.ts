@@ -7,7 +7,7 @@ import Service from '../../services';
 
 describe('Services', () => {
   afterEach(sinon.restore);
-  describe('1 - getUsers', () => {
+  describe('1 - GetUser', () => {
     beforeEach(() => {
 			sinon.stub(Service, <any>'request').resolves({ status: 200, data: users });
 		});
@@ -17,4 +17,24 @@ describe('Services', () => {
       expect(data).to.deep.equal(users);
     });
   });
+  describe('2 - GetUserDetails with valid username', () => {
+    beforeEach(() => {
+      sinon.stub(Service, <any>'request').resolves({ status: 200, data: userDetail });
+    });
+    it('should return user details', async () => {
+      const { status, data } = await Service.getUser('cassiusbessa');
+      expect(status).to.equal(200);
+      expect(data).to.deep.equal(userDetail);
+    });
+  });
+  describe('2 - GetUserDetails with invalid username', () => {
+    beforeEach(() => {
+      sinon.stub(Service, <any>'request').resolves({ status: 404, data: {message:'Not found'} });
+    });
+    it('should return user details', async () => {
+      const { status, data } = await Service.getUser('cassiusbessa');
+      expect(status).to.equal(404);
+      expect(data).to.deep.equal( { message:'Not found' });
+    });
+  }); 
 });
