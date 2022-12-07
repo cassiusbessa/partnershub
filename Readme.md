@@ -23,7 +23,7 @@ Access the directory
 DockerCompose
 
 ```bash
-  docker-compose up -d --build
+  sudo docker-compose up -d --build
 ```
 
 Now you can run the project.
