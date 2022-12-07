@@ -26,6 +26,11 @@ class Service {
     return { status, data }    
   }
 
+  public async getUserRepos(username: string) {
+    const {status, data} = await this.request(`users/${username}/repos`, '');
+    return { status, data }    
+  }
+
 }
 
 export default new Service();
