@@ -21,6 +21,11 @@ class Service {
     return { status, data, nextPage }    
   }
 
+  public async getUser(username: string) {
+    const {status, data} = await this.request(`users/${username}`, '');
+    return { status, data }    
+  }
+
 }
 
 export default new Service();
