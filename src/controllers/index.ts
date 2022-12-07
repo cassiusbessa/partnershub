@@ -16,6 +16,11 @@ class Controller {
     return res.status(status).json(data);
   }
 
+  public async getUserRepos (req: Request, res: Response) {
+    const { username } = req.params;
+    const { status, data }  = await Service.getUserRepos(username);
+    return res.status(status).json(data);
+  }
 }
 
 export default new Controller();
